@@ -29,26 +29,55 @@
  * Register Event Handler for Scroll-Up- and Scroll-Down-Event on windows (or other object):
  * $(window).advScroll({ options });
  * options may include:
- *	onUp(event, diff, scrollTop): function (default: function(){})
- *			 Event handler called when user has scrolled up for at least "upBy" pixels.
+ *	onUp(event, diff, scrollTop): function (default: null)
+ *			 Event handler function called when user has scrolled up for at least "upBy" pixels.
  *			"event" is the original scroll event, "diff" is the amount of pixels scrolled up since last scrolling down, 
  *			"scrollTop" is the element's new absolute scrollTop value.
  *			"this" is bound to the sender object, e.g. window.
  *	upBy: int (default: 20)
  *			Amount of pixels to at least scroll up since last scrolling down before the onUp-Event is fired.
- *	onDown(event, diff): function (default: function(){})
+ *	onTop: boolean or function (default: false)
+ *			If true, the onUp-function gets called upon reaching the top of the page.
+ *			If a function, this very function gets called upon reaching the top of the page. 
+ *			(The function's arguments are the same as those of onUp.)
+ *	onDown(event, diff, scrollTop): function (default: null)
  *			Event handler called when user has scrolled down for at least "downBy" pixels, see onUp.
  *	downBy: int (default: 20)
  *			Amound of pixels to at least scroll down since loading doc or scrolling up before the onDown-Event is fired.
+ *	onBottom: boolean or function (default: false)
+ *			See "onTop", just referring to the bottom of the page. If "true", the onDown handler is re-used.
  *	oncePerDirection: boolean (default: false)
  *			If false, the events onUp resp. onDown fire continuously once the upBy resp. downBy threshold has been crossed.
  *			If true, each event is fired at most once per changing the direction.
- * If you want to configure the "oncePerDirection" setting differently for the scrolling directions, you may use the
- * following options:
+ *	directionChangeDelayMillis: number (default: 50)
+ *			If zero (0), any change of scroll direction will immediately trigger a "direction change", meaning
+ *			the corresponding "onUp" or "onDown" event will fire after scrolling "upBy" resp. "downBy" pixels into
+ *			the new direction.
+ *			If greater than zero, this defines a delay in milli seconds which the page needs to stand still befor
+ *			a direction change. Example: You are scrolling downwards, suddenly you scroll upwards for a bit without
+ *			waiting for at least directionChangeDelayMillis milli seconds: This will not trigger a onUp-event,
+ *			in continuous mode (oncePerDirection==false) it will still trigger the onDown event even though you're scrolling
+ *			up, as this is still regarded as part of the same scrolling movement, a small irregularity, so to speek.
+ *			However, if you keep scrolling up further and reach the point again, where you started to scroll down, this
+ *			is no longer regarded as irregularity, but as an intended direction change despite the page not having
+ *			stood still for this delay.
+ *	horizontal: boolean (default: false)
+ *			If set to true, the plugin works for horizontal instead of vertical scrolling.
+ *			All properties keep their names, "onUp" refers to scrolling to the left, "onDown" to
+ *			scrolling to the right etc.
+ *
+ * If you want to configure the "oncePerDirection" or "directionChangeDelayMillis" settings differently 
+ * for the scrolling directions, you may use the following options:
  *	oncePerUp: boolean (default: undefined) 
  *			If defined, this setting overrides the "oncePerDirection" setting for scrolling upwards.
  *	oncePerDown: boolean (default: undefined) 
  *			If defined, this setting overrides the "oncePerDirection" setting for scrolling downwards. 
+ *	downUpDelayMillis: number (default: undefined)
+ *			If defined, this setting overrides the "directionChangeDelayMillis" setting for 
+ *			the transition from scrolling downwards to scrolling upwards.
+ *	upDownDelayMillis: number (default: undefined)
+ *			If defined, this setting overrides the "directionChangeDelayMillis" setting for 
+ *			the transition from scrolling upwards to scrolling downwards.
  */
 
 (function( $ ) {
@@ -145,13 +174,13 @@
 		//Defaults
 		upBy: 20,
 		onUp: null,
-		onTop: false, //TODO: function oder truthy für Aufruf von onUp.
+		onTop: false,
 		downBy: 20,
 		onDown: null,
-		onBottom: false, //TODO: dito
+		onBottom: false,
 		oncePerDirection: false,
-		horizontal: false, //TODO test/doc, ggf. rename von up/down zu backwards/forwards
-		directionChangeDelayMillis: 50 //TODO documentation
+		horizontal: false, //TODO test/doc
+		directionChangeDelayMillis: 50
 	};
  
 }( jQuery )); 
