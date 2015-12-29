@@ -23,9 +23,12 @@
 			tp.css("top", "-" + (tp.outerHeight() + 10) + "px" ); //10 px shadow
 			$("#bottompanel").css("bottom", "-5em");
 		}
-		$(window).advScroll({
+		var commonSettings = {
 			upBy: 100,
 			downBy: 10,
+			downUpDelayMillis: 0
+		};
+		$(window).advScroll($.extend({}, commonSettings, {
 			onUp: function(evt, px) {
 				showPanels();
 				$("#diff .value").text(-px);
@@ -36,19 +39,12 @@
 				$("#diff .value").text(px);
 			},
 			onBottom: showPanels,
-			oncePerDirection: true,
-			downUpDelayMillis: 0
-		}).advScroll({
-			upBy: 10,
-			downBy: 10,
+			oncePerDirection: true
+		})).advScroll($.extend({}, commonSettings, {
 			onUp: function(evt, px) { $("#diffContinuous .value").text(-px);},
 			onDown: function(evt, px) { $("#diffContinuous .value").text(px);},
 			oncePerDirection: false
-//			oncePerDown: true,
-//			oncePerUp: true
-		})
-		
-		;
+		}));
 	</script>
 	<style type="text/css">
 		body {margin: 2em 20%;}
@@ -92,8 +88,8 @@
 <div id="diff" class="diff"><div class="label">oncePerDirection</div><div class="value">0</div></div>
 <div id="diffContinuous" class="diff"><div class="label">continuous</div><div class="value">0</div></div>
 <div id="toppanel" class="panel">
-	<p>This panel might contain e.g. a menu, toolbar, or a TOC (table of contents). It appears when scrolling up (backwards) and
-	gets closed when scrolling down (forwards).</p>
+	This panel might contain e.g. a menu, toolbar, or a TOC (table of contents). It appears when scrolling up (backwards) and
+	gets closed when scrolling down (forwards).
 </div>
 <div id="bottompanel" class="panel">
 	this might be a toolbar panel.

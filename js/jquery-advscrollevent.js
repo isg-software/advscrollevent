@@ -82,7 +82,11 @@
 			var isMinDirChangeDelay = nowTS - lastScrollTimestamp > getDelay(realUp);
 			lastScrollTimestamp = nowTS;
 			
-			var up = isMinDirChangeDelay ? realUp : lastUp;
+			var diff = Math.abs(nowTop - lastDirChangePos);
+			var forceUp = realUp && nowTop < lastDirChangePos;
+			var forceDown = !realUp && nowTop > lastDirChangePos;
+			
+			var up = isMinDirChangeDelay ? realUp : forceUp ? true : forceDown ? false : lastUp;
 			var dirchanged = isMinDirChangeDelay && up !== lastUp;
 			if (dirchanged) {
 				lastUp = up;
@@ -98,14 +102,17 @@
 					onlyOnce = settings.oncePerDown;					
 				}
 				var called = false;
-				var diff = Math.abs(nowTop - lastDirChangePos);
 				if (!onlyOnce || !calledHandlerSinceDirChange) {
 					if (diff > (up ? settings.upBy : settings.downBy)) {
 						calledHandlerSinceDirChange = true;
 						if (up) {
-							settings.onUp.call(this, evt, diff, nowTop);
+							if (typeof settings.onUp === "function") {
+								settings.onUp.call(this, evt, diff, nowTop);
+							}
 						} else {
-							settings.onDown.call(this, evt, diff, nowTop);
+							if (typeof settings.onDown === "function") {
+								settings.onDown.call(this, evt, diff, nowTop);
+							}
 						}
 						called = true;
 					}
@@ -137,22 +144,14 @@
 	$.fn.advScroll.defaults = {
 		//Defaults
 		upBy: 20,
-		onUp: function() {},
+		onUp: null,
 		onTop: false, //TODO: function oder truthy für Aufruf von onUp.
 		downBy: 20,
-		onDown: function() {},
-		onBottom: function() {}, //TODO: dito
+		onDown: null,
+		onBottom: false, //TODO: dito
 		oncePerDirection: false,
 		horizontal: false, //TODO test/doc, ggf. rename von up/down zu backwards/forwards
 		directionChangeDelayMillis: 50 //TODO documentation
 	};
  
 }( jQuery )); 
-
-//TODO: Kleinere Ungenauigkeiten wie minimales Scrollen in "falsche" Richtung haben derzeit ein Problem:
-//Will ich z.B: hochscrollen und scrolle aber beim Anfassen des Touchscreens zunächst wenige Pixel nach unten, wird
-//ggf. die Scrollrichtung "down" erkannt und durch Ausbleiben einer Pause beibehalten, also "negativ nach down" gescrollt
-//und kein onUp-Event ausgelöst.
-//Da sollte noch ein Threshold für DirChange-Erkennung eingebaut werden.
-//Entweder DirChange nicht sofort auslösen, sondern erst ab einer Mindestscrolldistanz (Threshold), oder zwar sofort
-//ein DirChange-Event auslösen, jedoch bei zum Überschreiten des Thresholds in die Richtung die Delays deaktivieren?
