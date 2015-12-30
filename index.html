@@ -10,7 +10,7 @@
 	<script>hljs.initHighlightingOnLoad();</script>
 	
 	<!-- Include jQuery and the plugin -->
-	<script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="lib/jquery-2.1.4.min.js"></script>
 	<!--script type="text/javascript" src="js/min/jquery-scrollupdownevent-min.js"></script-->
 	<script type="text/javascript" src="js/jquery-advscrollevent.js"></script>
 	<script type="text/javascript">
@@ -23,28 +23,46 @@
 			tp.css("top", "-" + (tp.outerHeight() + 10) + "px" ); //10 px shadow
 			$("#bottompanel").css("bottom", "-5em");
 		}
-		var commonSettings = {
-			upBy: 100,
-			downBy: 10,
-			downUpDelayMillis: 0
-		};
-		$(window).advScroll($.extend({}, commonSettings, {
-			onUp: function(evt, px) {
-				showPanels();
-				$("#diff .value").text(-px);
-			},
-			onTop: true,
-			onDown: function(evt, px, top) { 
-				hidePanels();
-				$("#diff .value").text(px);
-			},
-			onBottom: showPanels,
-			oncePerDirection: true
-		})).advScroll($.extend({}, commonSettings, {
-			onUp: function(evt, px) { $("#diffContinuous .value").text(-px);},
-			onDown: function(evt, px) { $("#diffContinuous .value").text(px);},
-			oncePerDirection: false
-		}));
+		$(function() {
+			var commonSettings = {
+				upBy: 100,
+				downBy: 10,
+				downUpDelayMillis: 0
+			};
+			$(window).advScroll($.extend({}, commonSettings, {
+				onUp: function(evt, px) {
+					showPanels();
+					$("#diff .value").html("&uarr; " + px);
+				},
+				onTop: function(evt, px, top) {
+					showPanels();
+					$("#diff .value").html("&UpArrowBar; " + px);
+				},
+				onDown: function(evt, px, top) { 
+					hidePanels();
+					$("#diff .value").html("&darr; " + px);
+				},
+				onBottom: function(evt, px, top) {
+					showPanels();
+					$("#diff .value").html("&DownArrowBar; " + px);
+				},
+				oncePerDirection: true
+			})).advScroll($.extend({}, commonSettings, {
+				onUp: function(evt, px) { $("#diffContinuous .value").html("&uarr; " + px);},
+				onDown: function(evt, px) { $("#diffContinuous .value").html("&darr; " + px);},
+				onTop: function(evt, px) { $("#diffContinuous .value").html("&UpArrowBar; " + px);},
+				onBottom: function(evt, px) { $("#diffContinuous .value").html("&DownArrowBar; " + px);},
+				oncePerDirection: false
+			}));
+			$(".tableHolder").advScroll({
+				horizontal: true,
+				onUp: function(evt, px) { $("#tableDiff").html("&larr; " + px);},
+				onDown: function(evt, px) { $("#tableDiff").html("&rarr; " + px);},
+				onTop: function(evt, px) { $("#tableDiff").html("&larrb; " + px);},
+				onBottom: function(evt, px) { $("#tableDiff").html("&rarrb; " + px);},
+				scrollableContent: "table"
+			});
+		});
 	</script>
 	<style type="text/css">
 		body {margin: 2em 20%;}
@@ -82,6 +100,19 @@
 			left: 0;
 			background-color: green;
 		}
+		
+		.tableHolder {
+			width: 100%;
+			overflow-x: scroll;
+		}
+		table td {
+			border: 1px silver;
+			background: #eee;
+			margin: 0.2em;
+			padding: 2em;
+			white-space: nowrap;
+		}
+		
 	</style>
 </head>
 <body>
@@ -94,6 +125,7 @@
 <div id="bottompanel" class="panel">
 	this might be a toolbar panel.
 </div>
+<p></p>
 <p>
 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.	  
 </p>
@@ -109,7 +141,46 @@ Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie co
 At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, At accusam aliquyam diam diam dolore dolores duo eirmod eos erat, et nonumy sed tempor et et invidunt justo labore Stet clita ea et gubergren, kasd magna no rebum. sanctus sea sed takimata ut vero voluptua. est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.   
 </p><p>
 Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus.   
-</p><p>
+</p>
+
+<div class="tableHolder">
+	<table>
+		<tr>
+			<td>Column 1</td>
+			<td>Column 2</td>
+			<td>Column 3</td>
+			<td>Column 4</td>
+			<td>Column 5</td>
+			<td>Column 6</td>
+			<td>Column 7</td>
+			<td>Column 8</td>
+			<td>Column 9</td>
+			<td>Column 10</td>
+		</tr>
+	</table>
+</div>
+
+<div class="tableHolder">
+	<table>
+		<tr>
+			<td>Second 1</td>
+			<td>Second 2</td>
+			<td>Second 3</td>
+			<td>Second 4</td>
+			<td>Second 5</td>
+			<td>Second 6</td>
+		</tr>
+	</table>
+</div>
+
+<p>Scroll us horizontally!<br>
+<span id="tableDiff"></span></p>
+
+<p>The second table above is just meant to test/demonstrate that the scrollableContent selector <code>"table"</code>
+	is applied <em>locally</em> to the container element: Both tables have different widths and yet the
+	onBottom event should fire correctly for both of them.</p>
+
+<p>
 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.	  
 </p><p>
 Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.	  
@@ -124,5 +195,8 @@ At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergr
 </p><p>
 Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus.   
 </p>
+<p></p>
+
+
 </body>
 </html>

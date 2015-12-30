@@ -30,8 +30,9 @@
  * $(window).advScroll({ options });
  * options may include:
  *	onUp(event, diff, scrollTop): function (default: null)
- *			 Event handler function called when user has scrolled up for at least "upBy" pixels.
- *			"event" is the original scroll event, "diff" is the amount of pixels scrolled up since last scrolling down, 
+ *			Event handler function called when user has scrolled up for at least "upBy" pixels.
+ *			"event" is the original scroll event, 
+ *			"diff" is the amount of pixels scrolled up since last scrolling down, 
  *			"scrollTop" is the element's new absolute scrollTop value.
  *			"this" is bound to the sender object, e.g. window.
  *	upBy: int (default: 20)
@@ -46,6 +47,19 @@
  *			Amound of pixels to at least scroll down since loading doc or scrolling up before the onDown-Event is fired.
  *	onBottom: boolean or function (default: false)
  *			See "onTop", just referring to the bottom of the page. If "true", the onDown handler is re-used.
+ *			Important: The onBottom event needs to find the element containing the scrollable content in order
+ *			to calculate its height (or width in horizontal mode). If the jQuery plug-in is not applied to
+ *			$(window), but to some other scrollable content like a DIV with CSS "overflow:scroll", the content
+ *			of that container has to be specified in the "scrollableContent" property in order for
+ *			the onBottom event to work properly!
+ *	scrollableContent: jQuery resultset or (selector-)string (default: $(document))
+ *			Currently only needed if the "onBottom" event is used.
+ *			If the plug-in function is called on $(window), the default $(document) is correct, but if you
+ *			call the plug-in e.g. on some DIV elements with CSS "overflow: scroll" or "overflow: auto",
+ *			the content of those DIVs have to be wrapped in another element which is then to be selected
+ *			as scrollableContent. If this is exactly one element, you may "preselect" it and assign the jQuery
+ *			resultset to this property (as is the default $(document)). Otherwise you may simply assign a
+ *			jQuery selector string which will then be executed locally inside the container element.
  *	oncePerDirection: boolean (default: false)
  *			If false, the events onUp resp. onDown fire continuously once the upBy resp. downBy threshold has been crossed.
  *			If true, each event is fired at most once per changing the direction.
@@ -100,8 +114,36 @@
 				return typeof settings.upDownDelayMillis === "number" ? settings.upDownDelayMillis : settings.directionChangeDelayMillis;
 			}
 		};
+		
+		var me;
+		
+		var handleTopOrBottom = function(up, nowTop, diff, settings, evt) {
+			var handler = null;
+			if (up && nowTop === 0 && settings.onTop) {
+				handler = typeof settings.onTop === "function" ? settings.onTop : settings.onUp;
+			} else if (!up && settings.onBottom && settings.scrollableContent) {
+				var sc = typeof settings.scrollableContent === "string" ? 
+					  $(settings.scrollableContent, me) 
+					: settings.scrollableContent;
+				if (sc.length) {
+					var bott = settings.horizontal ?
+							  sc.width()  - me.width() 
+							: sc.height() - me.height();
+					if (nowTop >= bott) {
+						handler = typeof settings.onBottom === "function" ? settings.onBottom : settings.onDown;
+					}
+				}
+			}
+			if (typeof handler === "function") {
+				handler.call(this, evt, diff, nowTop);
+				return true;
+			} else {
+				return false;
+			}
+		};
  
 		this.scroll(function(evt) {
+			me = $(this);
 			var _lastTop = lastTop;
 			var nowTop = settings.horizontal ? $(this).scrollLeft() : $(this).scrollTop();
 			lastTop = nowTop;
@@ -121,7 +163,7 @@
 				lastUp = up;
 				lastDirChangePos = _lastTop;
 				calledHandlerSinceDirChange = false;
-			} else {
+			} else if (!handleTopOrBottom(up, nowTop, diff, settings, evt)) {
 				var onlyOnce = settings.oncePerDirection;
 				//Override der allgemeinen Regel für spezifische Richtung definiert?
 				if (up && typeof settings.oncePerUp === "boolean") {
@@ -130,7 +172,6 @@
 				if (!up && typeof settings.oncePerDown === "boolean") {
 					onlyOnce = settings.oncePerDown;					
 				}
-				var called = false;
 				if (!onlyOnce || !calledHandlerSinceDirChange) {
 					if (diff > (up ? settings.upBy : settings.downBy)) {
 						calledHandlerSinceDirChange = true;
@@ -143,25 +184,6 @@
 								settings.onDown.call(this, evt, diff, nowTop);
 							}
 						}
-						called = true;
-					}
-				}
-				if (!called) {
-					var handler = null;
-					if (up && nowTop === 0 && settings.onTop) {
-						handler = typeof settings.onTop === "function" ? settings.onTop : settings.onUp;
-					} else {
-						//try to find the right document.
-						var d = $(document, this);
-						if (d) {
-							var bott = settings.horizontal ? d.width() - $(this).width() : d.height () - $(this).height();
-							if (d && !up && settings.onBottom && nowTop >= bott) {
-								handler = typeof settings.onBottom === "function" ? settings.onBottom : settings.onDown;
-							}
-						}
-					}
-					if (typeof handler === "function") {
-						handler.call(this, evt, diff, nowTop);
 					}
 				}
 			}
@@ -180,7 +202,8 @@
 		onBottom: false,
 		oncePerDirection: false,
 		horizontal: false, //TODO test/doc
-		directionChangeDelayMillis: 50
+		directionChangeDelayMillis: 50,
+		scrollableContent: $(document) //TODO documentation
 	};
  
 }( jQuery )); 
