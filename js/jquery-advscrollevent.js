@@ -105,6 +105,8 @@
 		var lastUp = true;
 		var lastDirChangePos = 0;
 		var calledHandlerSinceDirChange = false;
+		var calledHandlerOnTop = false;
+		var calledHandlerOnBottom = false;
 		var lastScrollTimestamp = 0;
 		
 		var getDelay = function(up) {
@@ -117,10 +119,11 @@
 		
 		var me;
 		
-		var handleTopOrBottom = function(up, nowTop, diff, settings, evt) {
+		var handleTopOrBottom = function(up, nowTop, diff, settings, onlyOnce, evt) {
 			var handler = null;
-			if (up && nowTop === 0 && settings.onTop) {
+			if (up && nowTop <= 0 && settings.onTop) {
 				handler = typeof settings.onTop === "function" ? settings.onTop : settings.onUp;
+				lastUp = true;
 			} else if (!up && settings.onBottom && settings.scrollableContent) {
 				var sc = typeof settings.scrollableContent === "string" ? 
 					  $(settings.scrollableContent, me) 
@@ -131,13 +134,20 @@
 							: sc.height() - me.height();
 					if (nowTop >= bott) {
 						handler = typeof settings.onBottom === "function" ? settings.onBottom : settings.onDown;
+						lastUp = false;
 					}
 				}
 			}
 			if (typeof handler === "function") {
-				handler.call(this, evt, diff, nowTop);
+				if (!onlyOnce || up && !calledHandlerOnTop || !up && !calledHandlerOnBottom) {
+					handler.call(this, evt, diff, nowTop);
+				}
+				calledHandlerSinceDirChange = false;
+				calledHandlerOnTop = lastUp;
+				calledHandlerOnBottom = !lastUp;
 				return true;
 			} else {
+				calledHandlerOnTop = calledHandlerOnBottom = false;
 				return false;
 			}
 		};
@@ -163,7 +173,7 @@
 				lastUp = up;
 				lastDirChangePos = _lastTop;
 				calledHandlerSinceDirChange = false;
-			} else if (!handleTopOrBottom(up, nowTop, diff, settings, evt)) {
+			} else {
 				var onlyOnce = settings.oncePerDirection;
 				//Override der allgemeinen Regel für spezifische Richtung definiert?
 				if (up && typeof settings.oncePerUp === "boolean") {
@@ -172,16 +182,18 @@
 				if (!up && typeof settings.oncePerDown === "boolean") {
 					onlyOnce = settings.oncePerDown;					
 				}
-				if (!onlyOnce || !calledHandlerSinceDirChange) {
-					if (diff > (up ? settings.upBy : settings.downBy)) {
-						calledHandlerSinceDirChange = true;
-						if (up) {
-							if (typeof settings.onUp === "function") {
-								settings.onUp.call(this, evt, diff, nowTop);
-							}
-						} else {
-							if (typeof settings.onDown === "function") {
-								settings.onDown.call(this, evt, diff, nowTop);
+				if (!handleTopOrBottom(up, nowTop, diff, settings, onlyOnce, evt)) {
+					if (!onlyOnce || !calledHandlerSinceDirChange) {
+						if (diff > (up ? settings.upBy : settings.downBy)) {
+							calledHandlerSinceDirChange = true;
+							if (up) {
+								if (typeof settings.onUp === "function") {
+									settings.onUp.call(this, evt, diff, nowTop);
+								}
+							} else {
+								if (typeof settings.onDown === "function") {
+									settings.onDown.call(this, evt, diff, nowTop);
+								}
 							}
 						}
 					}
