@@ -36,7 +36,7 @@
 				},
 				onTop: function(evt, px, top) {
 					showPanels();
-					$("#diff .value").html("&UpArrowBar; " + px);
+					$("#diff .value").html("&#8868; " + px);
 				},
 				onDown: function(evt, px, top) { 
 					hidePanels();
@@ -44,14 +44,14 @@
 				},
 				onBottom: function(evt, px, top) {
 					showPanels();
-					$("#diff .value").html("&DownArrowBar; " + px);
+					$("#diff .value").html("&#8869; " + px);
 				},
 				oncePerDirection: true
 			})).advScroll($.extend({}, commonSettings, {
 				onUp: function(evt, px) { $("#diffContinuous .value").html("&uarr; " + px);},
 				onDown: function(evt, px) { $("#diffContinuous .value").html("&darr; " + px);},
-				onTop: function(evt, px) { $("#diffContinuous .value").html("&UpArrowBar; " + px);},
-				onBottom: function(evt, px) { $("#diffContinuous .value").html("&DownArrowBar; " + px);},
+				onTop: function(evt, px) { $("#diffContinuous .value").html("&#8868; " + px);},
+				onBottom: function(evt, px) { $("#diffContinuous .value").html("&#8869; " + px);},
 				oncePerDirection: false
 			}));
 			$(".tableHolder").advScroll({

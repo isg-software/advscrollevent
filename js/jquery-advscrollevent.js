@@ -75,6 +75,14 @@
  *			However, if you keep scrolling up further and reach the point again, where you started to scroll down, this
  *			is no longer regarded as irregularity, but as an intended direction change despite the page not having
  *			stood still for this delay.
+ *	directionChangeThreshold: number (default: 500)
+ *			If directionChangeDelayMillis is > 0, this threshold describes the maximum number of pixels
+ *			a scrolling into the opposite direction without waiting for the specified Millis timeout
+ *			will not be regarded as directionChange. In other words: When suddenly changing the scrolling
+ *			direction and scrolling back for more pixels than specified here, a directionChange will
+ *			be recognised even if the directionChangeDelayMillis timeout has not yet been exceeded and
+ *			even if the initial scrolling motion had begun in a greater distance, i.e you didn't scroll back
+ *			to where the motion started. If zero (0), this setting will be ignored.
  *	horizontal: boolean (default: false)
  *			If set to true, the plugin works for horizontal instead of vertical scrolling.
  *			All properties keep their names, "onUp" refers to scrolling to the left, "onDown" to
@@ -104,6 +112,8 @@
 		var lastTop = 0;
 		var lastUp = true;
 		var lastDirChangePos = 0;
+		var realLastUp = true;
+		var realLastDirChangePos = 0;
 		var calledHandlerSinceDirChange = false;
 		var calledHandlerOnTop = false;
 		var calledHandlerOnBottom = false;
@@ -151,6 +161,15 @@
 				return false;
 			}
 		};
+		
+		var thresholdExceeded = function(up, nowTop) {
+			if (settings.directionChangeThreshold <= 0) {
+				return false;
+			} else {
+				return (up && nowTop < realLastDirChangePos - settings.directionChangeThreshold) ||
+						(!up && nowTop > realLastDirChangePos + settings.directionChangeThreshold);
+			}
+		};
  
 		this.scroll(function(evt) {
 			me = $(this);
@@ -163,12 +182,18 @@
 			var isMinDirChangeDelay = nowTS - lastScrollTimestamp > getDelay(realUp);
 			lastScrollTimestamp = nowTS;
 			
+			var realDirchanged = realUp !== realLastUp;
+			if (realDirchanged) {
+				realLastUp = realUp;
+				realLastDirChangePos = _lastTop;
+			}
+			
 			var diff = Math.abs(nowTop - lastDirChangePos);
-			var forceUp = realUp && nowTop < lastDirChangePos;
-			var forceDown = !realUp && nowTop > lastDirChangePos;
+			var forceUp = realUp && (nowTop < lastDirChangePos || thresholdExceeded(true, nowTop));
+			var forceDown = !realUp && (nowTop > lastDirChangePos || thresholdExceeded(false, nowTop));
 			
 			var up = isMinDirChangeDelay ? realUp : forceUp ? true : forceDown ? false : lastUp;
-			var dirchanged = isMinDirChangeDelay && up !== lastUp;
+			var dirchanged = up !== lastUp;
 			if (dirchanged) {
 				lastUp = up;
 				lastDirChangePos = _lastTop;
@@ -215,6 +240,7 @@
 		oncePerDirection: false,
 		horizontal: false, //TODO test/doc
 		directionChangeDelayMillis: 50,
+		directionChangeThreshold: 500, //TODO doc
 		scrollableContent: $(document) //TODO documentation
 	};
  
