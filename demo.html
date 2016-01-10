@@ -65,7 +65,7 @@
 		});
 	</script>
 	<style type="text/css">
-		body {margin: 2em 20%;}
+		body {margin: 5em 20%}
 		p {padding-bottom: 2.5em; }
 		.panel {
 			background-color: rgba(255, 255, 200, 0.8);
@@ -125,22 +125,87 @@
 <div id="bottompanel" class="panel">
 	this might be a toolbar panel.
 </div>
-<p></p>
+
+<h1>Demo Page</h1>
+
+<p>This page demonstrates one use case for the advscrollevent jQuery plug-in and some of its options.</p>
+
+<h2>Monitoring vertical scrolling of page</h2>
+
+<p>In this demo, the plug-in gets called twice for <code>$(window)</code>, once with the option <code>oncePerDirection: false</code>
+	(“continouous mode”)
+	and once with <code>oncePerDirection: true</code>. The first class registers event handlers for <code>onUp</code>, <code>onDown</code>,
+	<code>onTop</code> and <code>onBottom</code> which merely update the green box in the bottom left corner.
+	The second one also registers handlers for these four events, which not only update the contents of the red box in the lower right corner,
+	but also hide or show the top and bottom panels: They are shown on the onUp, onTop and onBottom events, while they are hidden 
+	by the onDown event handler.</p>
+	
+<p>Both calls share some common options:</p>
+<pre><code class="language-javascript">
+var commonSettings = {
+    upBy: 100,
+    downBy: 10,
+    downUpDelayMillis: 0
+};
+</code></pre>
+<p>Other properties are kept on default values.</p>
 <p>
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.	  
+	You'll notice the different settings for scrolling up or down, if you pay attention: First of all, after the page stood still for some seconds,
+	you'll have to scroll up by at least 100 pixels in order to trigger an up event (in both cases, continous mode or oncePerDirection, only in the latter
+	case the last scroll movement before has to have been a downward movement), while it takes only 10 pixels scrolling downwards to trigger the down event.
+	This difference was chosen on purpose, regarding the panel use case: The panels should not be shown on some minimal scrolling upwards, but only after
+	a “major” movement, while a much smaller downwards movements should be sufficient to hide them again.
 </p>
 <p>
-Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.	  
-</p><p>
-Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.	 
-</p><p>
-Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.	  
-</p><p>
-Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.	
-</p><p>
-At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, At accusam aliquyam diam diam dolore dolores duo eirmod eos erat, et nonumy sed tempor et et invidunt justo labore Stet clita ea et gubergren, kasd magna no rebum. sanctus sea sed takimata ut vero voluptua. est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.   
-</p><p>
-Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus.   
+	On the other hand, an other default feature	has been disabled for the up movement by setting <code>downUpDelayMillis</code> to zero: 
+	This enforces that any upwards movement of at least 100px (see <code>upBy</code>) is immediately recognized, even if the
+	user had been scrolling downwards for quite a bit and suddenly changed to scrolling back upwards again without any pause
+	between these movements.<br>
+	Compare this to a up-down-direction change with the property <code>upDownDelayMillis</code> set on its default value
+	of currently 50ms. This means that if you are scrolling downwards and suddenly, without a pause (stand-still) of at least 0.05 seconds,
+	scroll upwards again, this will not be treated as scrolling upwards, but the plug-in will still (in continuous mode)
+	trigger down events with decreasing amount of scrolled pixels – as long as the upwards movement does neither exceed the point
+	where the downwards scrolling started, nor exceed the amount of pixels defined in the <code>directionChangeThreshold</code>
+	property, currently defaulting to 500 pixels.
+</p>
+<p>
+	This default behaviour of ignoring smaller scroll movements in opposite directions if they seem to be part of
+	the same movement (without a considerable stand-still in between) was chosen with regard of the fact, that,
+	especially when using your finger on a touch screen or touch pad, you might easily trigger minimal unintended
+	scrolling movements alone when putting your finger on top of the touch surface or when removing it again.
+	If, in this demo page, you are scrolling upwards an on stopping that, accidentally scroll downwards again even for
+	more than the 10 pixels specified in the <code>downBy</code> property, this won't trigger a down event would hide
+	the panels—as long as there were less than 50ms stand-still between scrolling upwards and downwards and as long as
+	the downwards movement does not exceed 500 pixels ond does not scroll beyond the point the initials upwards movement started.
+</p>
+
+<p>
+	Feel free to make copies of this demo page and vary the different options!
+</p>
+
+
+<h2>Monitoring horizontal scrolling of tables</h2>
+
+<p>
+	This page also contains a second demonstration: This shows how to apply the plug-in to 
+	other scrollable content of the page instead of <code>$(window)</code> as well as
+	the <code>horizontal</code> option.
+</p>
+
+<p>
+	Since a table won't be scrollable itself, even with CSS property <code>overflow-x: scroll</code>,
+	the following two tables are each wrapped in a <code>&lt;div class="tableHolder"&gt;</code> element with said overflow property.
+	The plug-in gets called on <code>$(".tableHolder")</code> and thus gets applied on both table holders
+	separately with only one call.
+</p>
+
+<p>
+	Have a look at the source code of this demo page for details. Pleas notice the use of the
+	<code>scrollableContent: "table"</code> option, which is needed by the plugin for triggering the
+	<code>onBottom</code> correctly: The plug-in has to calculate the width of the content of the
+	scrollable element, in this case the width of the table inside the tableHolder.
+	Both tables in this demo have different widths in order to demonstrate that the content width
+	is calculated individually for each tableHolder.
 </p>
 
 <div class="tableHolder">
@@ -176,10 +241,15 @@ Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
 <p>Scroll us horizontally!<br>
 <span id="tableDiff"></span></p>
 
-<p>The second table above is just meant to test/demonstrate that the scrollableContent selector <code>"table"</code>
-	is applied <em>locally</em> to the container element: Both tables have different widths and yet the
-	onBottom event should fire correctly for both of them.</p>
 
+<h2>Some more content</h2>
+
+<p>
+	No need to read any further from here ;-)
+</p>
+<p>
+	The following Lorem ipsum boilerplate text was simply inserted on order to have some more scrollable
+	content to play with. 
 <p>
 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.	  
 </p><p>
@@ -195,7 +265,6 @@ At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergr
 </p><p>
 Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus.   
 </p>
-<p></p>
 
 
 </body>
