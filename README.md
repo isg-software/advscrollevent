@@ -47,20 +47,21 @@ As already established above, the `advScroll()` function takes exactly one argum
 
 #### Options for event handler function
 
-* `onUp(event, diff, scrollTop)`: function (default: `null`)
-	Event handler function called when user has scrolled up for at least `upBy` pixels (see option `upBy` in the next section). (In _horizontal mode_—see `horizontal`—this event is triggern upon scrolling to the left instead of upwards.) Arguments:
+* `onUp(event, diff, scrollTop)`: function (default: `null`)    
+	Event handler function called when user has scrolled up for at least `upBy` pixels (see option `upBy` in the next section). (In _horizontal mode_—see `horizontal`—this event is triggern upon scrolling to the left instead of upwards.)    
+	Arguments:
 	* `event` is the original scroll event,
 	* `diff` is the amount of pixels scrolled up since last scrolling down, 
 	* `scrollTop` is the element's new absolute scrollTop value.
 	* `this` is bound to the sender object, e.g. `window`.
-* `onDown(event, diff, scrollTop)`: function (default: `null`)
+* `onDown(event, diff, scrollTop)`: function (default: `null`)   
 	Event handler function called when user has scrolled down (or to the right in _horizontal mode_) for at least `downBy` pixels, see `onUp`.
-* `onTop`: boolean or function (default: `false`)
-	If `true`, the `onUp`-function gets called upon reaching the top (resp. left end) of the page.
+* `onTop`: boolean or function (default: `false`)   
+	If `true`, the `onUp`-function gets called upon reaching the top (resp. left end) of the page.   
 	If a `function`, this very function gets called upon reaching the top of the page. (The function's arguments are the same as those of `onUp`.)
-* `onBottom`: boolean or function (default: `false`)
-	See `onTop`, just referring to the bottom (resp. right end) of the page. If `true`, the `onDown` handler is re-used, if a function is assigned, that will be used as event handler.
-	**Important**: The `onBottom` event needs to find the element containing the scrollable content in order to calculate its height (or width in horizontal mode). If the jQuery plug-in is _not_ applied to `$(window)`, but to some other scrollable content like a DIV with CSS `overflow:scroll`, the content of that container has to be specified in the `scrollableContent` property in order for the `onBottom` event to work properly!
+* `onBottom`: boolean or function (default: `false`)   
+	See `onTop`, just referring to the bottom (resp. right end) of the page. If `true`, the `onDown` handler is re-used, if a function is assigned, that will be used as event handler.   
+	**Important**: The `onBottom` event needs to find the element containing the scrollable content in order to calculate its height (or width in horizontal mode). If the jQuery plug-in is _not_ applied to `$(window)`, but to some other scrollable content like a DIV with CSS `overflow:scroll`, the content of that container has to be specified in the `scrollableContent` property in order for the `onBottom` event to work properly!   
 	**Note:** This event is not guaranteed to work precisely in every browser, at least not in the current state of the plug-in!
 
 #### Other options
@@ -69,7 +70,7 @@ As already established above, the `advScroll()` function takes exactly one argum
 	Amount of pixels to at least scroll up since last scrolling down before the `onUp`-Event is fired.
 * `downBy`: number (default: 20)   
 	Amound of pixels to at least scroll down since loading doc or scrolling up before the `onDown`-Event is fired.
-* `scrollableContent`: jQuery resultset or (selector-)string (default: `$(document)`)
+* `scrollableContent`: jQuery resultset or (selector-)string (default: `$(document)`)   
 	Currently only needed if the `onBottom` event is used and ony when applied to something other than `$(window)`.   
 	If the plug-in function is called on `$(window)`, the default (`$(document)`) is correct, but if you call the plug-in e.g. on some DIV elements with CSS `overflow: scroll` or `overflow: auto`, the content of those DIVs have to be wrapped in another element which is then to be selected as `scrollableContent`. If this is exactly one element, you may "preselect" it and assign the jQuery resultset to this property (as is the default `$(document)`). Otherwise you may simply assign a jQuery selector _string_ which will then be executed locally inside the container element. See demo.
 * `oncePerDirection`: boolean (default: false)   
@@ -83,7 +84,7 @@ As already established above, the `advScroll()` function takes exactly one argum
 * `directionChangeThreshold`: number (default: 500)   
 	If `directionChangeDelayMillis` is > 0, this threshold describes the maximum number of pixels a scrolling movement into the opposite direction without waiting for the specified timeout will not be regarded as direction change. In other words: When suddenly changing the scrolling direction and scrolling back for more pixels than specified here, a direction change will be recognised even if the `directionChangeDelayMillis` timeout has not yet been exceeded and even if the initial scrolling motion had begun in a greater distance, i.e you didn't scroll back to where the motion started.    
 	If zero (0), this setting will be ignored.
-* `horizontal`: boolean (default: false)
+* `horizontal`: boolean (default: false)   
 	If set to true, the plugin works for horizontal instead of vertical scrolling. All properties keep their names, `onUp` refers to scrolling to the left, `onDown` to	scrolling to the right etc.
  
 If you want to configure the `oncePerDirection` or `directionChangeDelayMillis` settings separately for both scrolling directions, you may use the following options:
