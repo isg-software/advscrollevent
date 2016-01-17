@@ -1,0 +1,32 @@
+{
+  "name": "jquery-advscrollevent",
+  "version": "1.0.0",
+  "description": "jQuery plugin providing special higher-level scroll events",
+  "main": "js/min/jquery-advscrollevent.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://isg-software@github.com/isg-software/advscrollevent.git"
+  },
+  "keywords": [
+    "jquery-plugin",
+    "ecosystem:jquery",
+    "scroll",
+    "event",
+    "handler",
+    "onUp",
+    "onDown",
+    "onTop",
+    "onBottom",
+    "scrollby",
+    "responsive"
+  ],
+  "author": "Immo Schulz-Gerlach <immo@isg-software.de> (http://www.isg-software.de)",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/isg-software/advscrollevent/issues"
+  },
+  "homepage": "https://github.com/isg-software/advscrollevent#readme"
+}
