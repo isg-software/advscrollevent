@@ -2,6 +2,8 @@
 
 jQuery plug-in providing advanced scroll events. These might, for example, trigger an event, whenever a window or frame content has been scrolled up or down by at least a certain amount of pixels, optionally only after a change of the scroll direction.
 
+[Project home page][projectHome]
+
 ## What is this?
 
 This software module contains a [jQuery][jQuery] plug-in building on jQuery's native `scroll` event: By applying jQuery's [.scroll()][jQuery.scroll] method to selected scrollable content (typically, but not limited to, `$(window)`), you may register an event handler wich gets called whenever the content is scrolled. With jQuery's methods [scrollTop][jQuery.scrollTop] resp. [scrollLeft][jQuery.scrollLeft] the event handler may then determine the acutal position of the viewport.
@@ -48,7 +50,7 @@ As already established above, the `advScroll()` function takes exactly one argum
 #### Options for event handler function
 
 * `onUp(event, diff, scrollTop)`: function (default: `null`)    
-	Event handler function called when user has scrolled up for at least `upBy` pixels (see option `upBy` in the next section). (In _horizontal mode_—see `horizontal`—this event is triggern upon scrolling to the left instead of upwards.)    
+	Event handler function called when user has scrolled up for at least `upBy` pixels (see option `upBy` in the next section). (In _horizontal mode_—see `horizontal`—this event is triggered upon scrolling to the left instead of upwards.)    
 	Arguments:
 	* `event` is the original scroll event,
 	* `diff` is the amount of pixels scrolled up since last scrolling down, 
@@ -120,6 +122,7 @@ Redistribution and use in source and binary forms, with or without modification,
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+[projectHome]: http://www.isg-software.de/advscrollevent/indexe.html
 [jQuery]: https://jquery.com
 [jQuery.scroll]: http://api.jquery.com/scroll/
 [jQuery.scrollTop]: http://api.jquery.com/scrollTop/

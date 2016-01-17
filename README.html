@@ -8,6 +8,8 @@
 
 <p>jQuery plug-in providing advanced scroll events. These might, for example, trigger an event, whenever a window or frame content has been scrolled up or down by at least a certain amount of pixels, optionally only after a change of the scroll direction.</p>
 
+<p><a href="http://www.isg-software.de/advscrollevent/indexe.html">Project home page</a></p>
+
 <h2 id="whatisthis">What is this?</h2>
 
 <p>This software module contains a <a href="https://jquery.com">jQuery</a> plug-in building on jQuery&#8217;s native <code>scroll</code> event: By applying jQuery&#8217;s <a href="http://api.jquery.com/scroll/">.scroll()</a> method to selected scrollable content (typically, but not limited to, <code>$(window)</code>), you may register an event handler wich gets called whenever the content is scrolled. With jQuery&#8217;s methods <a href="http://api.jquery.com/scrollTop/">scrollTop</a> resp. <a href="http://api.jquery.com/scrollLeft/">scrollLeft</a> the event handler may then determine the acutal position of the viewport.</p>
@@ -58,8 +60,9 @@
 <h4 id="optionsforeventhandlerfunction">Options for event handler function</h4>
 
 <ul>
-<li><code>onUp(event, diff, scrollTop)</code>: function (default: <code>null</code>)
-Event handler function called when user has scrolled up for at least <code>upBy</code> pixels (see option <code>upBy</code> in the next section). (In <em>horizontal mode</em>—see <code>horizontal</code>—this event is triggern upon scrolling to the left instead of upwards.) Arguments:
+<li><code>onUp(event, diff, scrollTop)</code>: function (default: <code>null</code>)<br/>
+Event handler function called when user has scrolled up for at least <code>upBy</code> pixels (see option <code>upBy</code> in the next section). (In <em>horizontal mode</em>—see <code>horizontal</code>—this event is triggered upon scrolling to the left instead of upwards.)<br/>
+Arguments:
 
 <ul>
 <li><code>event</code> is the original scroll event,</li>
@@ -67,14 +70,14 @@ Event handler function called when user has scrolled up for at least <code>upBy<
 <li><code>scrollTop</code> is the element&#8217;s new absolute scrollTop value.</li>
 <li><code>this</code> is bound to the sender object, e.g. <code>window</code>.</li>
 </ul></li>
-<li><code>onDown(event, diff, scrollTop)</code>: function (default: <code>null</code>)
+<li><code>onDown(event, diff, scrollTop)</code>: function (default: <code>null</code>)<br/>
 Event handler function called when user has scrolled down (or to the right in <em>horizontal mode</em>) for at least <code>downBy</code> pixels, see <code>onUp</code>.</li>
-<li><code>onTop</code>: boolean or function (default: <code>false</code>)
-If <code>true</code>, the <code>onUp</code>-function gets called upon reaching the top (resp. left end) of the page.
+<li><code>onTop</code>: boolean or function (default: <code>false</code>)<br/>
+If <code>true</code>, the <code>onUp</code>-function gets called upon reaching the top (resp. left end) of the page.<br/>
 If a <code>function</code>, this very function gets called upon reaching the top of the page. (The function&#8217;s arguments are the same as those of <code>onUp</code>.)</li>
-<li><code>onBottom</code>: boolean or function (default: <code>false</code>)
-See <code>onTop</code>, just referring to the bottom (resp. right end) of the page. If <code>true</code>, the <code>onDown</code> handler is re-used, if a function is assigned, that will be used as event handler.
-<strong>Important</strong>: The <code>onBottom</code> event needs to find the element containing the scrollable content in order to calculate its height (or width in horizontal mode). If the jQuery plug-in is <em>not</em> applied to <code>$(window)</code>, but to some other scrollable content like a DIV with CSS <code>overflow:scroll</code>, the content of that container has to be specified in the <code>scrollableContent</code> property in order for the <code>onBottom</code> event to work properly!
+<li><code>onBottom</code>: boolean or function (default: <code>false</code>)<br/>
+See <code>onTop</code>, just referring to the bottom (resp. right end) of the page. If <code>true</code>, the <code>onDown</code> handler is re-used, if a function is assigned, that will be used as event handler.<br/>
+<strong>Important</strong>: The <code>onBottom</code> event needs to find the element containing the scrollable content in order to calculate its height (or width in horizontal mode). If the jQuery plug-in is <em>not</em> applied to <code>$(window)</code>, but to some other scrollable content like a DIV with CSS <code>overflow:scroll</code>, the content of that container has to be specified in the <code>scrollableContent</code> property in order for the <code>onBottom</code> event to work properly!<br/>
 <strong>Note:</strong> This event is not guaranteed to work precisely in every browser, at least not in the current state of the plug-in!</li>
 </ul>
 
@@ -85,7 +88,7 @@ See <code>onTop</code>, just referring to the bottom (resp. right end) of the pa
 Amount of pixels to at least scroll up since last scrolling down before the <code>onUp</code>-Event is fired.</li>
 <li><code>downBy</code>: number (default: 20)<br/>
 Amound of pixels to at least scroll down since loading doc or scrolling up before the <code>onDown</code>-Event is fired.</li>
-<li><code>scrollableContent</code>: jQuery resultset or (selector-)string (default: <code>$(document)</code>)
+<li><code>scrollableContent</code>: jQuery resultset or (selector-)string (default: <code>$(document)</code>)<br/>
 Currently only needed if the <code>onBottom</code> event is used and ony when applied to something other than <code>$(window)</code>.<br/>
 If the plug-in function is called on <code>$(window)</code>, the default (<code>$(document)</code>) is correct, but if you call the plug-in e.g. on some DIV elements with CSS <code>overflow: scroll</code> or <code>overflow: auto</code>, the content of those DIVs have to be wrapped in another element which is then to be selected as <code>scrollableContent</code>. If this is exactly one element, you may &#8220;preselect&#8221; it and assign the jQuery resultset to this property (as is the default <code>$(document)</code>). Otherwise you may simply assign a jQuery selector <em>string</em> which will then be executed locally inside the container element. See demo.</li>
 <li><code>oncePerDirection</code>: boolean (default: false)<br/>
@@ -99,7 +102,7 @@ However, if you keep scrolling up further and reach the point again, where you s
 <li><code>directionChangeThreshold</code>: number (default: 500)<br/>
 If <code>directionChangeDelayMillis</code> is &gt; 0, this threshold describes the maximum number of pixels a scrolling movement into the opposite direction without waiting for the specified timeout will not be regarded as direction change. In other words: When suddenly changing the scrolling direction and scrolling back for more pixels than specified here, a direction change will be recognised even if the <code>directionChangeDelayMillis</code> timeout has not yet been exceeded and even if the initial scrolling motion had begun in a greater distance, i.e you didn&#8217;t scroll back to where the motion started.<br/>
 If zero (0), this setting will be ignored.</li>
-<li><code>horizontal</code>: boolean (default: false)
+<li><code>horizontal</code>: boolean (default: false)<br/>
 If set to true, the plugin works for horizontal instead of vertical scrolling. All properties keep their names, <code>onUp</code> refers to scrolling to the left, <code>onDown</code> to scrolling to the right etc.</li>
 </ul>
 
