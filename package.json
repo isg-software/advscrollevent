@@ -1,6 +1,6 @@
 {
   "name": "jquery-advscrollevent",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "jQuery plugin providing special higher-level scroll events",
   "main": "js/min/jquery-advscrollevent.js",
   "files": [
